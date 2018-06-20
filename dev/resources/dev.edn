@@ -2,4 +2,4 @@
  :duct.core/include ["duct_api_sample/config"]
 
  :duct.module/sql
- {:database-url "jdbc:postgresql://localhost/postgres"}}
+ {:database-url "jdbc:postgresql://localhost:5432/duct-api-sample-development?user=postgres&password="}}
