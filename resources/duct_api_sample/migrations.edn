@@ -1,2 +1,11 @@
 {:duct.migrator/ragtime
- {}}
+ {:migrations [#ig/ref :duct-api-sample.migration/create-users]}
+
+ [:duct.migrator.ragtime/sql :duct-api-sample.migration/create-users]
+ {:up ["CREATE TABLE users (
+                           id INTEGER PRIMARY KEY,
+                           email varchar(80) NOT NULL,
+                           password_digest varchar(255) NOT NULL,
+                           created_at timestamptz NOT NULL,
+                           updated_at timestamptz NOT NULL)"]
+  :down ["DROP TABLE users"]}}
