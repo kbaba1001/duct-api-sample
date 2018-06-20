@@ -13,27 +13,27 @@
   :down ["DROP TABLE users"]}
 
  [:duct.migrator.ragtime/sql :duct-api-sample.migration/create-follows]
- {:up ["CREATE TABLE follows (id integer PRIMARY KEY,
+ {:up ["CREATE TABLE follows (id serial NOT NULL PRIMARY KEY,
                               follow_user_id integer NOT NULL REFERENCES users (id),
                               followed_user_id integer NOT NULL REFERENCES users (id),
-                              created_at timestamptz NOT NULL,
-                              updated_at timestamptz NOT NULL,
+                              created_at timestamptz NOT NULL DEFAULT now(),
+                              updated_at timestamptz NOT NULL DEFAULT now(),
                               UNIQUE (follow_user_id, followed_user_id))"]
   :down ["DROP TABLE follows"]}
 
  [:duct.migrator.ragtime/sql :duct-api-sample.migration/create-articles]
- {:up ["CREATE TABLE articles (id integer PRIMARY KEY,
+ {:up ["CREATE TABLE articles (id serial NOT NULL PRIMARY KEY,
                                user_id integer NOT NULL REFERENCES users (id),
                                body text NOT NULL,
-                               created_at timestamptz NOT NULL,
-                               updated_at timestamptz NOT NULL)"]
+                               created_at timestamptz NOT NULL DEFAULT now(),
+                               updated_at timestamptz NOT NULL DEFAULT now())"]
   :down ["DROP TABLE articles"]}
 
  [:duct.migrator.ragtime/sql :duct-api-sample.migration/create-favorites]
- {:up ["CREATE TABLE favorites (id integer PRIMARY KEY,
+ {:up ["CREATE TABLE favorites (id serial NOT NULL PRIMARY KEY,
                                 user_id integer NOT NULL REFERENCES users (id),
                                 article_id integer NOT NULL REFERENCES articles (id),
-                                created_at timestamptz NOT NULL,
-                                updated_at timestamptz NOT NULL,
+                                created_at timestamptz NOT NULL DEFAULT now(),
+                                updated_at timestamptz NOT NULL DEFAULT now(),
                                 UNIQUE (user_id, article_id))"]
   :down ["DROP TABLE favorites"]}}
