@@ -1,11 +1,39 @@
 {:duct.migrator/ragtime
- {:migrations [#ig/ref :duct-api-sample.migration/create-users]}
+ {:migrations [#ig/ref :duct-api-sample.migration/create-users
+               #ig/ref :duct-api-sample.migration/create-follows
+               #ig/ref :duct-api-sample.migration/create-articles
+               #ig/ref :duct-api-sample.migration/create-favorites]}
 
  [:duct.migrator.ragtime/sql :duct-api-sample.migration/create-users]
- {:up ["CREATE TABLE users (
-                           id INTEGER PRIMARY KEY,
-                           email varchar(80) NOT NULL,
-                           password_digest varchar(255) NOT NULL,
-                           created_at timestamptz NOT NULL,
-                           updated_at timestamptz NOT NULL)"]
-  :down ["DROP TABLE users"]}}
+ {:up ["CREATE TABLE users (id integer PRIMARY KEY,
+                            email varchar(80) NOT NULL,
+                            password_digest varchar(255) NOT NULL,
+                            created_at timestamptz NOT NULL,
+                            updated_at timestamptz NOT NULL)"]
+  :down ["DROP TABLE users"]}
+
+ [:duct.migrator.ragtime/sql :duct-api-sample.migration/create-follows]
+ {:up ["CREATE TABLE follows (id integer PRIMARY KEY,
+                              follow_user_id integer NOT NULL REFERENCES users (id),
+                              followed_user_id integer NOT NULL REFERENCES users (id),
+                              created_at timestamptz NOT NULL,
+                              updated_at timestamptz NOT NULL,
+                              UNIQUE (follow_user_id, followed_user_id))"]
+  :down ["DROP TABLE follows"]}
+
+ [:duct.migrator.ragtime/sql :duct-api-sample.migration/create-articles]
+ {:up ["CREATE TABLE articles (id integer PRIMARY KEY,
+                               user_id integer NOT NULL REFERENCES users (id),
+                               body text NOT NULL,
+                               created_at timestamptz NOT NULL,
+                               updated_at timestamptz NOT NULL)"]
+  :down ["DROP TABLE articles"]}
+
+ [:duct.migrator.ragtime/sql :duct-api-sample.migration/create-favorites]
+ {:up ["CREATE TABLE favorites (id integer PRIMARY KEY,
+                                user_id integer NOT NULL REFERENCES users (id),
+                                article_id integer NOT NULL REFERENCES articles (id),
+                                created_at timestamptz NOT NULL,
+                                updated_at timestamptz NOT NULL,
+                                UNIQUE (user_id, article_id))"]
+  :down ["DROP TABLE favorites"]}}
