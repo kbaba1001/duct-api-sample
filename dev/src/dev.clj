@@ -21,10 +21,10 @@
   (eftest/run-tests (eftest/find-tests "test")))
 
 (defn db []
-  (-> system (ig/find-derived-1 :duct.database/sql) val :spec))
+  (-> system (ig/find-derived-1 :duct.database/sql) val))
 
 (defn q [sql]
-  (jdbc/query (db) sql))
+  (jdbc/query (:spec (db)) sql))
 
 (clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test")
 

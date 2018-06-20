@@ -1,2 +1,13 @@
-{:duct.module/ataraxy
- {}}
+{:duct.middleware.buddy/authentication
+ {:backend :jws
+  :secret #duct/env "JWT_SECRET"}
+
+ :duct.router/ataraxy
+ {:middleware {:jws-auth #ig/ref :duct.middleware.buddy/authentication}}
+
+ :duct.module/ataraxy
+ {[:post "/users/signin" {{:keys [email password]} :body-params}] [:users/signin email password]}
+
+ :duct-api-sample.handler.users/signin
+ {:db #ig/ref :duct.database/sql
+  :jwt-secret #duct/env "JWT_SECRET"}}
