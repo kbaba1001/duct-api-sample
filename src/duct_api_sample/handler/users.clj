@@ -10,6 +10,7 @@
     (let [id (users/create-user db email password)]
       [::response/created (str "/users/" id)])))
 
+; TODO このメソッドは ::signin の中でletとかで定義したほうが良いのでは？
 (defn with-token [user jwt-secret]
   (->> (jwt/sign {:email (:email user)} jwt-secret)
        (assoc user :token)))

@@ -7,6 +7,7 @@
   (create-user [db email password])
   (signin-user [db email password]))
 
+; TODO write test
 (extend-protocol Users
   duct.database.sql.Boundary
 
