@@ -19,4 +19,4 @@
   (fn [{[_ email password] :ataraxy/result}]
     (if-let [user (users/signin-user db email password)]
       [::response/ok {:user (with-token user jwt-secret)}]
-      {:status 403 :headers {} :body "Not authorized"})))
+      [::response/forbidden "Not authorized"])))
