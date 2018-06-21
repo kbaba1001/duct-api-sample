@@ -10,13 +10,11 @@
     (let [id (users/create-user db email password)]
       [::response/created (str "/users/" id)])))
 
-; TODO このメソッドは ::signin の中でletとかで定義したほうが良いのでは？
-(defn with-token [user jwt-secret]
-  (->> (jwt/sign {:email (:email user)} jwt-secret)
-       (assoc user :token)))
-
 (defmethod ig/init-key ::signin [_ {:keys [db jwt-secret]}]
   (fn [{[_ email password] :ataraxy/result}]
-    (if-let [user (users/signin-user db email password)]
-      [::response/ok {:user (with-token user jwt-secret)}]
-      [::response/forbidden "Not authorized"])))
+    (letfn [(with-token [user]
+              (->> (jwt/sign {:email (:email user)} jwt-secret)
+                   (assoc user :token)))]
+      (if-let [user (users/signin-user db email password)]
+        [::response/ok {:user (with-token user)}]
+        [::response/forbidden "Not authorized"]))))
