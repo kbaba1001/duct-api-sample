@@ -17,7 +17,7 @@
 (defn read-config []
   (duct/read-config (io/resource "test.edn")))
 
-(defn run-test []
+(defn run-tests []
   (eftest/run-tests (eftest/find-tests "test")))
 
 (defn db []
