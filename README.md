@@ -1,19 +1,20 @@
 # duct-api-sample
 
-FIXME: description
+As practice, I will create api server by using [duct](https://github.com/duct-framework/duct).
 
-## Developing
+I will create a system like a simple Twitter.
 
-### Setup
+ER:
 
-When you first clone this repository, run:
+![er](https://user-images.githubusercontent.com/1624680/41804851-0259a150-76d9-11e8-93d4-474b0bbbba61.png)
+
+### run database
+
+To run database (postgresql):
 
 ```sh
-lein duct setup
+docker-compose up
 ```
-
-This will create files for local configuration, and prep your system
-for the project.
 
 ### Environment
 
@@ -51,20 +52,16 @@ dev=> (reset)
 
 ### Testing
 
-Testing is fastest through the REPL, as you avoid environment startup
-time.
-
 ```clojure
-dev=> (test)
+user=> (dev)
+:loaded
+test=> (reset)
+:reloading (...)
+:resumed
+test=> (run-tests)
 ...
-```
-
-But you can also run tests through Leiningen.
-
-```sh
-lein test
 ```
 
 ## Legal
 
-Copyright © 2018 FIXME
+Copyright © 2018 MIT License
