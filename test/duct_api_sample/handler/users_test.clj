@@ -1,5 +1,6 @@
 (ns duct-api-sample.handler.users-test
   (:require [clojure.test :refer :all]
+            [clojure.java.jdbc :as jdbc]
             [integrant.core :as ig]
             [integrant.repl.state :refer [config system]]
             [ring.mock.request :as mock]
@@ -14,6 +15,13 @@
 
 (defn db []
   (-> system (ig/find-derived-1 :duct.database/sql) val))
+
+(defn clean-up-users [test-fn]
+  (test-fn)
+  (jdbc/delete! (:spec (db)) :users []))
+
+(use-fixtures :each clean-up-users)
+
 
 ; (deftest post-users
 ;   (testing "POST /users"
