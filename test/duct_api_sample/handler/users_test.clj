@@ -4,6 +4,7 @@
             [integrant.core :as ig]
             [integrant.repl.state :refer [config system]]))
 
+; TODO ig/find-derived-1 でテスト環境を引っ張ってくるより, duct.database.sql.Boundary のオブジェクトを作ってやるほうが良いのかもしれない
 (defn db []
   (-> system (ig/find-derived-1 :duct.database/sql) val))
 
@@ -17,7 +18,9 @@
 (use-fixtures :each clean-up-users)
 
 (deftest post-users
-  ; boundaryのテストがあるのでdbをスタブしても良い気がする
+  ; TODO
+  ; * boundaryのテストがあるのでdbをスタブしても良い気がする (https://github.com/bguthrie/shrubbery)
+  ; * handlerで jwt-secretを使ってないから渡す必要ないかも
   (testing "POST /users"
     (let [handler (ig/init-key :duct-api-sample.handler.users/create {:db (db)
                                                                       :jwt-secret "xxxxxxxxxxxxxxxxxxxx"})
