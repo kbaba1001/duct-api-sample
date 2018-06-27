@@ -25,4 +25,7 @@
                   :resource-paths ["dev/resources"]
                   :dependencies   [[integrant/repl "0.2.0"]
                                    [eftest "0.4.1"]
-                                   [kerodon "0.9.0"]]}})
+                                   [ring/ring-mock "0.3.2"]
+                                   [spyscope "0.1.6"]
+                                   [kerodon "0.9.0"]]
+                  :injections [(require 'spyscope.core)]}})
