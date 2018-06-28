@@ -1,19 +1,24 @@
 (ns duct-api-sample.handler.users-test
-  (:require duct.database.sql
+  (:require [duct.database.sql :refer :all]
             [clojure.test :refer :all]
             [clojure.java.jdbc :as jdbc]
             [integrant.core :as ig]
             [integrant.repl.state :refer [config system]]))
 
-; TODO ig/find-derived-1 でテスト環境を引っ張ってくるより, duct.database.sql.Boundary のオブジェクトを作ってやるほうが良いのかもしれない
-
-(def db (->duct.database.sql.Boundary "jdbc:postgresql://localhost:5432/duct-sample-test?user=postgres"))
+(def db-spec
+  {:dbtype "postgresql"
+   :dbname "duct-api-sample-test"
+   :user "postgres"
+   :password ""})
+(def db (->Boundary db-spec))
 
 (defn clean-up-users [test-fn]
   (test-fn)
-  (jdbc/delete! db :users []))
+  (jdbc/delete! db-spec :users []))
 
 (use-fixtures :each clean-up-users)
+
+; --------------------
 
 (deftest post-users
   ; TODO
@@ -25,8 +30,7 @@
           response (handler {:ataraxy/result [1 "user1@example.com" "password"]})]
       (is (= :ataraxy.response/created (first response)))
       (is (re-find #"/users/\d+" (fnext response)))
-      (is (some? (first (jdbc/query db ["SELECT TRUE FROM users WHERE email=?" "user1@example.com"])))))))
-
+      (is (some? (first (jdbc/query db-spec ["SELECT TRUE FROM users WHERE email=?" "user1@example.com"])))))))
 
 ; 次の hoge の引数は :foo キーを持つ Map を1つ受け取る。
 ; :foo の value は要素数3の配列を期待しており、
