@@ -14,21 +14,22 @@
           user (first (jdbc/query db-spec ["SELECT email FROM users WHERE id=?" user-id]))]
       (is (= "user1@example.com" (:email user))))))
 
-(deftest test-signin-user
-  (defn setup-user []
-    (users/create-user db "user1@example.com" "password"))
 
+(use-fixtures :each
+  utils/db-creanup
+  (fn [f]
+    (users/create-user db "user1@example.com" "password")
+    (f)))
+
+(deftest test-signin-user
   (testing "signin user"
-    (let [_ (setup-user)
-          result (users/signin-user db "user1@example.com" "password")]
+    (let [result (users/signin-user db "user1@example.com" "password")]
       (is (= "user1@example.com" (:email result)))))
 
   (testing "invalid password"
-    (let [_ (setup-user)
-          result (users/signin-user db "user1@example.com" "invalid-password")]
+    (let [result (users/signin-user db "user1@example.com" "invalid-password")]
       (is (nil? result))))
 
   (testing "invalid email"
-    (let [_ (setup-user)
-          result (users/signin-user db "unkown-user@example.com" "password")]
+    (let [result (users/signin-user db "unkown-user@example.com" "password")]
       (is (nil? result)))))
