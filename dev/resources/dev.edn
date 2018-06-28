@@ -1,5 +1,9 @@
 {:duct.core/environment :development
  :duct.core/include ["duct_api_sample/config"]
 
- :duct.database.sql/hikaricp
- {:jdbc-url "jdbc:postgresql://localhost:5432/duct-api-sample-development?user=postgres&password="}}
+ ; if use connection pool
+ ; :duct.database.sql/hikaricp
+ ; {:jdbc-url "jdbc:postgresql://localhost:5432/duct-api-sample-development?user=postgres&password="}
+
+ :duct.module/sql
+ {:database-url "jdbc:postgresql://localhost:5432/duct-api-sample-development?user=postgres&password="}}
