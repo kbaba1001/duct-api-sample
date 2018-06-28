@@ -3,10 +3,7 @@
             [duct.database.sql :refer :all]
             [clojure.test :refer :all]
             [clojure.java.jdbc :as jdbc]
-            [integrant.core :as ig]
-            [integrant.repl.state :refer [config system]]
-            [duct-api-sample.boundary.users :as users]
-            [fipp.edn :refer (pprint) :rename {pprint fipp}]))
+            [duct-api-sample.boundary.users :as users]))
 
 (use-fixtures :each utils/db-creanup)
 
