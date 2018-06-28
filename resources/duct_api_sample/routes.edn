@@ -10,8 +10,7 @@
   [:post "/users/signin" {{:keys [email password]} :body-params}] [:users/signin email password]}
 
  :duct-api-sample.handler.users/create
- {:db #ig/ref :duct.database/sql
-  :jwt-secret #duct/env "JWT_SECRET"}
+ {:db #ig/ref :duct.database/sql}
 
  :duct-api-sample.handler.users/signin
  {:db #ig/ref :duct.database/sql
