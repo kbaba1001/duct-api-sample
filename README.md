@@ -52,16 +52,25 @@ dev=> (reset)
 
 ### Testing
 
+in repl:
+
 ```clojure
 user=> (dev)
 :loaded
-test=> (reset)
-:reloading (...)
-:resumed
-test=> (run-tests)
+dev=> (test)
 ...
+```
+
+or, run next command:
+
+```sh
+lein test
 ```
 
 ## Legal
 
-Copyright © 2018 MIT License
+Copyright © 2018 @kbaba1001
+
+## License
+
+MIT License
