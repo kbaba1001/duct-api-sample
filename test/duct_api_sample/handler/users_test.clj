@@ -1,24 +1,12 @@
 (ns duct-api-sample.handler.users-test
-  (:require [duct.database.sql :refer :all]
+  (:require [duct-api-sample.test-utils :as utils :refer [db-spec db]]
+            [duct.database.sql :refer :all]
             [clojure.test :refer :all]
             [clojure.java.jdbc :as jdbc]
             [integrant.core :as ig]
             [integrant.repl.state :refer [config system]]))
 
-(def db-spec
-  {:dbtype "postgresql"
-   :dbname "duct-api-sample-test"
-   :user "postgres"
-   :password ""})
-(def db (->Boundary db-spec))
-
-(defn clean-up-users [test-fn]
-  (test-fn)
-  (jdbc/delete! db-spec :users []))
-
-(use-fixtures :each clean-up-users)
-
-; --------------------
+(use-fixtures :each utils/db-creanup)
 
 (deftest post-users
   ; TODO
@@ -27,7 +15,7 @@
   (testing "POST /users"
     (let [handler (ig/init-key :duct-api-sample.handler.users/create {:db db
                                                                       :jwt-secret "xxxxxxxxxxxxxxxxxxxx"})
-          response (handler {:ataraxy/result [1 "user1@example.com" "password"]})]
+          response (handler {:ataraxy/result [nil "user1@example.com" "password"]})]
       (is (= :ataraxy.response/created (first response)))
       (is (re-find #"/users/\d+" (fnext response)))
       (is (some? (first (jdbc/query db-spec ["SELECT TRUE FROM users WHERE email=?" "user1@example.com"])))))))

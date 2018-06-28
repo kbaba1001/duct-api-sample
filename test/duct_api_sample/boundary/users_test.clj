@@ -1,5 +1,6 @@
 (ns duct-api-sample.boundary.users-test
-  (:require [duct.database.sql :refer :all]
+  (:require [duct-api-sample.test-utils :as utils :refer [db-spec db]]
+            [duct.database.sql :refer :all]
             [clojure.test :refer :all]
             [clojure.java.jdbc :as jdbc]
             [integrant.core :as ig]
@@ -7,22 +8,7 @@
             [duct-api-sample.boundary.users :as users]
             [fipp.edn :refer (pprint) :rename {pprint fipp}]))
 
-; TODO collaboration(共通化) test-util みたいなのを作る
-(def db-spec
-  {:dbtype "postgresql"
-   :dbname "duct-api-sample-test"
-   :user "postgres"
-   :password ""})
-
-(def db (->Boundary db-spec))
-
-(defn clean-up-users [test-fn]
-  (test-fn)
-  (jdbc/delete! db-spec :users []))
-
-(use-fixtures :each clean-up-users)
-
-; ----------------------
+(use-fixtures :each utils/db-creanup)
 
 ; TODO will write validation
 (deftest test-create-user
