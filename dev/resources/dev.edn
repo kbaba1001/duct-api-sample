@@ -2,4 +2,4 @@
  :duct.core/include ["duct_api_sample/config"]
 
  :duct.database.sql/hikaricp
- {:jdbc-url "jdbc:postgresql://localhost:5432/duct-api-sample-development?user=postgres&password="}}
+ {:jdbc-url #duct/env "DEV_DB_URL"}}

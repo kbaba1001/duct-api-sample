@@ -1,0 +1,7 @@
+{:up ["CREATE TABLE follows (id serial NOT NULL PRIMARY KEY,
+                              follow_user_id integer NOT NULL REFERENCES users (id),
+                              followed_user_id integer NOT NULL REFERENCES users (id),
+                              created_at timestamptz NOT NULL DEFAULT now(),
+                              updated_at timestamptz NOT NULL DEFAULT now(),
+                              UNIQUE (follow_user_id, followed_user_id))"]
+ :down ["DROP TABLE follows"]}

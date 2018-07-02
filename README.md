@@ -1,19 +1,20 @@
 # duct-api-sample
 
-FIXME: description
+As practice, I will create api server by using [duct](https://github.com/duct-framework/duct).
 
-## Developing
+I will create a system like a simple Twitter.
 
-### Setup
+ER:
 
-When you first clone this repository, run:
+![er](https://user-images.githubusercontent.com/1624680/41804851-0259a150-76d9-11e8-93d4-474b0bbbba61.png)
+
+### run database
+
+To run database (postgresql):
 
 ```sh
-lein duct setup
+docker-compose up
 ```
-
-This will create files for local configuration, and prep your system
-for the project.
 
 ### Environment
 
@@ -49,17 +50,62 @@ dev=> (reset)
 :resumed
 ```
 
-### Testing
+### Environment Variables
 
-Testing is fastest through the REPL, as you avoid environment startup
-time.
+I recommend to use [direnv](https://github.com/direnv/direnv)
+
+```sh
+cp dot.envrc.sample .envrc
+```
+
+### Migration
+
+I use [Ragtime](https://github.com/weavejester/ragtime), without [migrator.ragtime](https://github.com/duct-framework/migrator.ragtime).
 
 ```clojure
+user=> (migrate)                   ; migrate a dev env database
+Applying 20180702001_create_users
+...
+
+user=> (migrate "test")            ; migrate a test env database
+Applying 20180702001_create_users
+...
+
+```
+
+or, run next command:
+
+```sh
+lein migrate
+lein migrate test
+```
+
+As, rollback:
+
+```clojure
+user=> (rollback)
+user=> (rollback "test")
+```
+
+command:
+
+```sh
+lein rollback
+lein rollback test
+```
+
+### Testing
+
+in repl:
+
+```clojure
+user=> (dev)
+:loaded
 dev=> (test)
 ...
 ```
 
-But you can also run tests through Leiningen.
+or, run next command:
 
 ```sh
 lein test
@@ -67,4 +113,8 @@ lein test
 
 ## Legal
 
-Copyright © 2018 FIXME
+Copyright © 2018 @kbaba1001
+
+## License
+
+MIT License

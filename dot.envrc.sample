@@ -1,1 +1,4 @@
-export JWT_SECRET=""
+export JWT_SECRET="kQxPpuwHNLtaXGcvBr56sq3JESUglZhFYM9eOj0TVnI1bf2C74iAWRDydKzom8FV4d0uE6T8CRltg7eOIvoXnKS9hf5wabAcYxQHU2BjDsN3GzJkPriMZqp1yLWmzCjX"
+
+export DEV_DB_URL="jdbc:postgresql://localhost:5432/duct-api-sample-development?user=postgres&password="
+export TEST_DB_URL="jdbc:postgresql://localhost:5432/duct-api-sample-test?user=postgres&password="
