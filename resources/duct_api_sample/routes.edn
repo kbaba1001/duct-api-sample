@@ -11,7 +11,7 @@
 
   ; TODO protect MASS Assignment
   ["/articles"] {[:get ""] [:articles/index]
-                ; [:get id] [:articles/show ^Int id]
+                 [:get id] [:articles/show ^Int id]
                 ; [:post {params :body-params}] [:articles/create params]
                 ; [:put "/update" id {params :body-params}] [:articles/update ^Int id params]
                 ; [:delete id] [:articles/destroy ^Int id]
@@ -27,4 +27,10 @@
  [:duct.handler.sql/query :duct-api-sample.handler.articles/index]
  {:db  #ig/ref :duct.database/sql
   :sql ["SELECT * FROM articles"]
+  :hrefs {:href "/articles/{id}"}}
+
+ [:duct.handler.sql/query :duct-api-sample.handler.articles/show]
+ {:db  #ig/ref :duct.database/sql
+  :request {[_ id] :ataraxy/result}
+  :sql ["SELECT * FROM articles WHERE id = ?" id]
   :hrefs {:href "/articles/{id}"}}}
