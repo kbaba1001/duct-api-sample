@@ -5,6 +5,7 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [buddy/buddy-hashers "1.3.0"]
                  [duct/core "0.6.2"]
+                 [duct/handler.sql "0.3.1"]
                  [duct/module.logging "0.3.1"]
                  [duct/module.web "0.6.4"]
                  [duct/module.ataraxy "0.2.0"]

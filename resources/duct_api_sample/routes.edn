@@ -7,11 +7,24 @@
 
  :duct.module/ataraxy
  {[:post "/users" {{:keys [email password]} :body-params}] [:users/create email password]
-  [:post "/users/signin" {{:keys [email password]} :body-params}] [:users/signin email password]}
+  [:post "/users/signin" {{:keys [email password]} :body-params}] [:users/signin email password]
+
+  ; TODO protect MASS Assignment
+  ["/articles"] {[:get ""] [:articles/index]
+                ; [:get id] [:articles/show ^Int id]
+                ; [:post {params :body-params}] [:articles/create params]
+                ; [:put "/update" id {params :body-params}] [:articles/update ^Int id params]
+                ; [:delete id] [:articles/destroy ^Int id]
+                }}
 
  :duct-api-sample.handler.users/create
  {:db #ig/ref :duct.database/sql}
 
  :duct-api-sample.handler.users/signin
  {:db #ig/ref :duct.database/sql
-  :jwt-secret #duct/env "JWT_SECRET"}}
+  :jwt-secret #duct/env "JWT_SECRET"}
+
+ [:duct.handler.sql/query :duct-api-sample.handler.articles/index]
+ {:db  #ig/ref :duct.database/sql
+  :sql ["SELECT * FROM articles"]
+  :hrefs {:href "/articles/{id}"}}}
