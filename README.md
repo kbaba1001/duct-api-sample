@@ -50,6 +50,50 @@ dev=> (reset)
 :resumed
 ```
 
+### Environment Variables
+
+I recommend to use [direnv](https://github.com/direnv/direnv)
+
+```sh
+cp dot.envrc.sample .envrc
+```
+
+### Migration
+
+I use [Ragtime](https://github.com/weavejester/ragtime), without [migrator.ragtime](https://github.com/duct-framework/migrator.ragtime).
+
+```clojure
+user=> (migrate)                   ; migrate a dev env database
+Applying 20180702001_create_users
+...
+
+user=> (migrate "test")            ; migrate a test env database
+Applying 20180702001_create_users
+...
+
+```
+
+or, run next command:
+
+```sh
+lein migrate
+lein migrate test
+```
+
+As, rollback:
+
+```clojure
+user=> (rollback)
+user=> (rollback "test")
+```
+
+command:
+
+```sh
+lein rollback
+lein rollback test
+```
+
 ### Testing
 
 in repl:
