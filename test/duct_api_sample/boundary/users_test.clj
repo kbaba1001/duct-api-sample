@@ -14,7 +14,6 @@
           user (first (jdbc/query db-spec ["SELECT email FROM users WHERE id=?" user-id]))]
       (is (= "user1@example.com" (:email user))))))
 
-
 (use-fixtures :each
   utils/db-creanup
   (fn [f]
