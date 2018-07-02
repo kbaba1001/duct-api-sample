@@ -3,8 +3,7 @@
 
  :duct.module/logging {}
  :duct.module.web/api {}
- :duct.module/sql {}
+ :duct.database.sql/hikaricp {}
 
  :duct.core/include
- ["duct_api_sample/migrations"
-  "duct_api_sample/routes"]}
+ ["duct_api_sample/routes"]}

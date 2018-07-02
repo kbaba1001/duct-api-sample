@@ -8,13 +8,16 @@
                  [duct/module.logging "0.3.1"]
                  [duct/module.web "0.6.4"]
                  [duct/module.ataraxy "0.2.0"]
-                 [duct/module.sql "0.4.2"]
+                 [duct/database.sql.hikaricp "0.3.3"]
                  [duct/middleware.buddy "0.1.0"]
+                 [ragtime "0.7.2"]
                  [org.postgresql/postgresql "42.1.4"]]
   :plugins [[duct/lein-duct "0.10.6"]]
   :main ^:skip-aot duct-api-sample.main
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
+  :aliases {"migrate"  ["run" "-m" "user/migrate"]
+            "rollback" ["run" "-m" "user/rollback"]}
   :profiles
   {:dev  [:project/dev :profiles/dev]
    :repl {:prep-tasks   ^:replace ["javac" "compile"]
