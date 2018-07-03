@@ -11,10 +11,8 @@
 (deftest post-users
   ; TODO
   ; * boundaryのテストがあるのでdbをスタブしても良い気がする (https://github.com/bguthrie/shrubbery)
-  ; * handlerで jwt-secretを使ってないから渡す必要ないかも
   (testing "POST /users"
-    (let [handler (ig/init-key :duct-api-sample.handler.users/create {:db db
-                                                                      :jwt-secret "xxxxxxxxxxxxxxxxxxxx"})
+    (let [handler (ig/init-key :duct-api-sample.handler.users/create {:db db})
           response (handler {:ataraxy/result [nil "user1@example.com" "password"]})]
       (is (= :ataraxy.response/created (first response)))
       (is (re-find #"/users/\d+" (fnext response)))
