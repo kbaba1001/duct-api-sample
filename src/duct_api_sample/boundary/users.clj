@@ -20,7 +20,7 @@
   (find-user-by-email [{:keys [spec]} email]
     (first (jdbc/query spec ["SELECT * FROM users WHERE email=?" email])))
 
-  (signin-user [{:keys [spec]} email password]
-    (if-let [user (find-user-by-email {:spec spec} email)]
+  (signin-user [db email password]
+    (if-let [user (find-user-by-email db email)]
       (if (hashers/check password (:password_digest user))
         (dissoc user :password_digest)))))
