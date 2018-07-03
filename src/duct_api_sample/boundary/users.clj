@@ -5,6 +5,7 @@
 
 (defprotocol Users
   (create-user [db email password])
+  (find-user-by-email [db email])
   (signin-user [db email password]))
 
 (extend-protocol Users
@@ -16,7 +17,10 @@
                                              :password_digest pw-hash})]
       (-> results ffirst val)))
 
+  (find-user-by-email [{:keys [spec]} email]
+    (first (jdbc/query spec ["SELECT * FROM users WHERE email=?" email])))
+
   (signin-user [{:keys [spec]} email password]
-    (if-let [user (-> (jdbc/query spec ["SELECT * FROM users WHERE email=?" email]) first)]
+    (if-let [user (find-user-by-email {:spec spec} email)]
       (if (hashers/check password (:password_digest user))
         (dissoc user :password_digest)))))

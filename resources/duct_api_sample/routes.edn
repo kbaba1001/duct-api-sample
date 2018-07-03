@@ -9,10 +9,9 @@
  {[:post "/users" {{:keys [email password]} :body-params}] [:users/create email password]
   [:post "/users/signin" {{:keys [email password]} :body-params}] [:users/signin email password]
 
-  ; TODO protect MASS Assignment
-  ["/articles"] {[:get ""] [:articles/index]
+  ["/articles"] {[:get] [:articles/index]
                  [:get id] [:articles/show ^Int id]
-                ; [:post {params :body-params}] [:articles/create params]
+                 [:post {{:keys [body]} :body-params}] ^:jws-auth [:articles/create body]
                 ; [:put "/update" id {params :body-params}] [:articles/update ^Int id params]
                 ; [:delete id] [:articles/destroy ^Int id]
                 }}
@@ -33,4 +32,7 @@
  {:db  #ig/ref :duct.database/sql
   :request {[_ id] :ataraxy/result}
   :sql ["SELECT * FROM articles WHERE id = ?" id]
-  :hrefs {:href "/articles/{id}"}}}
+  :hrefs {:href "/articles/{id}"}}
+
+ :duct-api-sample.handler.articles/create
+ {:db #ig/ref :duct.database/sql}}
