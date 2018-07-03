@@ -7,7 +7,7 @@
 
 (use-fixtures :each utils/db-creanup)
 
-; TODO will write validation
+; TODO will write spec
 (deftest test-create-user
   (testing "create user"
     (let [user-id (users/create-user db "user1@example.com" "password")
@@ -19,6 +19,12 @@
   (fn [f]
     (users/create-user db "user1@example.com" "password")
     (f)))
+
+(deftest test-find-user-by-email
+  (testing "find user by email"
+    (let [user (users/find-user-by-email db "user1@example.com")]
+      (is (= "user1@example.com" (:email user)))
+      (is (int? (:id user))))))
 
 (deftest test-signin-user
   (testing "signin user"
