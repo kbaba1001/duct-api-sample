@@ -17,8 +17,10 @@
 (defn read-config []
   (duct/read-config (io/resource "dev.edn")))
 
-(defn test []
-  (eftest/run-tests (eftest/find-tests "test")))
+; (test [#'duct-api-sample.boundary.users-test/test-create-user]) こんな感じで使う
+(defn test
+  ([] (eftest/run-tests (eftest/find-tests "test")))
+  ([vars] (eftest/run-tests vars)))
 
 (defn db []
   (-> system (ig/find-derived-1 :duct.database/sql) val))
