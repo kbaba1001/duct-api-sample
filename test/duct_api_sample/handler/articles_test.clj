@@ -16,4 +16,9 @@
     (let [handler (ig/init-key :duct-api-sample.handler.articles/create {:db db})
           response (handler {:ataraxy/result [nil "hello world"] :identity {:email "user1@example.com"}})]
       (is (= :ataraxy.response/created (first response)))
-      (is (re-find #"/articles/\d+" (fnext response))))))
+      (is (re-find #"/articles/\d+" (fnext response)))
+      (let [user-id (:id (users/find-user-by-email db "user1@example.com"))
+            article (first (jdbc/query db-spec ["SELECT * FROM articles WHERE user_id = ?" user-id]))]
+        (are [expect actual] (= expect actual)
+          "hello world" (:body article)
+          (:created_at article) (:updated_at article))))))
