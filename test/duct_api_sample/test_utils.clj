@@ -8,6 +8,13 @@
 
 (def db (->Boundary db-spec))
 
+(def table-names
+  (map :relname (jdbc/query db-spec ["SELECT relname FROM pg_stat_user_tables WHERE relname <> 'ragtime_migrations';"])))
+
+(defn- drop-all-tables []
+  (doseq [t table-names]
+    (jdbc/delete! db-spec t [])))
+
 (defn db-creanup [test-fn]
   (test-fn)
-  (jdbc/delete! db-spec :users []))
+  (drop-all-tables))
