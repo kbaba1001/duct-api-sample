@@ -17,7 +17,6 @@
 (defn read-config []
   (duct/read-config (io/resource "dev.edn")))
 
-; (test [#'duct-api-sample.boundary.users-test/test-create-user]) こんな感じで使う
 (defn test
   ([] (eftest/run-tests (eftest/find-tests "test")))
   ([vars] (eftest/run-tests vars)))
