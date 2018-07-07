@@ -5,7 +5,7 @@
             [buddy.sign.jwt :as jwt]
             [duct-api-sample.boundary.users :as users]))
 
-; TODO emailは重複禁止にしたい。DBにもユニーク制約付けてなかった...
+; TODO emailは重複禁止にしたい。
 (def create-form-schema
   {:email [st/required st/email]
    :password [st/required st/string [st/min-count 8] [st/max-count 100]]})
