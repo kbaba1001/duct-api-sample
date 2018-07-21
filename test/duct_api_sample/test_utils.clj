@@ -11,7 +11,10 @@
 (def table-names
   (map :relname (jdbc/query db-spec ["SELECT relname FROM pg_stat_user_tables WHERE relname <> 'ragtime_migrations';"])))
 
-(defn- drop-all-tables []
+(defn drop-table [table-name]
+    (jdbc/delete! db-spec table-name []))
+
+(defn drop-all-tables []
   (doseq [t table-names]
     (jdbc/delete! db-spec t [])))
 
