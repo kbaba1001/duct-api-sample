@@ -13,7 +13,7 @@
   ; * boundaryのテストがあるのでdbをスタブしても良い気がする (https://github.com/bguthrie/shrubbery)
   (testing "POST /users"
     (let [handler (ig/init-key :duct-api-sample.handler.users/create {:db db})
-          response (handler {:ataraxy/result [nil "user1@example.com" "password"]})]
+          response (handler {:body-params {:email "user1@example.com" :password "password"}})]
       (is (= :ataraxy.response/created (first response)))
       (is (re-find #"/users/\d+" (fnext response)))
       (is (some? (first (jdbc/query db-spec ["SELECT TRUE FROM users WHERE email=?" "user1@example.com"])))))))
