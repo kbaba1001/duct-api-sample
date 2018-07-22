@@ -15,6 +15,7 @@
   {:email [st/required st/email [unique-email db]]
    :password [st/required st/string [st/min-count 8] [st/max-count 100]]})
 
+; TODO 気をつけないと params で Mass Assignment になりそうなのが微妙
 (defmethod ig/init-key ::create [_ {:keys [db]}]
   (fn [{{:keys [email password] :as params} :body-params}]
     (if-let [errors (first (st/validate params (create-form-schema db)))]
