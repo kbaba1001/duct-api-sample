@@ -8,7 +8,7 @@
 
 (use-fixtures :each utils/db-creanup)
 
-(deftest post-users
+(deftest test-handler-users
   ; TODO
   ; * boundaryのテストがあるのでdbをスタブしても良い気がする (https://github.com/bguthrie/shrubbery)
   (testing "POST /users"
@@ -16,14 +16,10 @@
           response (handler {:body-params {:email "user1@example.com" :password "password"}})]
       (is (= :ataraxy.response/created (first response)))
       (is (re-find #"/users/\d+" (fnext response)))
-      (is (some? (first (jdbc/query db-spec ["SELECT TRUE FROM users WHERE email=?" "user1@example.com"])))))))
+      (is (some? (first (jdbc/query db-spec ["SELECT TRUE FROM users WHERE email=?" "user1@example.com"]))))))
 
-; 次の hoge の引数は :foo キーを持つ Map を1つ受け取る。
-; :foo の value は要素数3の配列を期待しており、
-; この配列の添字1, 2 の位置の値を変数 email, password に
-; 代入してfunction内で使用する
-;
-; (defn hoge [{[_ email password] :foo}]
-;   (str email password))
-; (hoge {:foo [1 2 3]})
-; #=> "23"
+  (testing "POST /users/signin"
+    (let [handler (ig/init-key :duct-api-sample.handler.users/signin {:db db :jwt-secret "xxx"})
+          response (handler {:body-params {:email "user1@example.com" :password "password"}})]
+      (is (= :ataraxy.response/ok (first response)))
+      (is (= "user1@example.com" (-> response fnext :user :email))))))

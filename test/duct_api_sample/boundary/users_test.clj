@@ -5,7 +5,7 @@
             [clojure.java.jdbc :as jdbc]
             [duct-api-sample.boundary.users :as users]))
 
-(deftest test-user
+(deftest test-boundary-users
   (do
     ; TODO will write spec
     (testing "create user"

@@ -6,8 +6,8 @@
  {:middleware {:jws-auth #ig/ref :duct.middleware.buddy/authentication}}
 
  :duct.module/ataraxy
- {[:post "/users" {{:keys [email password]} :body-params}] [:users/create email password]
-  [:post "/users/signin" {{:keys [email password]} :body-params}] [:users/signin email password]
+ {[:post "/users" {:keys [body-params]}] [:users/create body-params]
+  [:post "/users/signin" {:keys [body-params]}] [:users/signin body-params]
 
   ["/articles"] {[:get] [:articles/index]
                  [:get id] [:articles/show ^Int id]
