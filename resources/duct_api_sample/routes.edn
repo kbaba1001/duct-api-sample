@@ -6,12 +6,12 @@
  {:middleware {:jws-auth #ig/ref :duct.middleware.buddy/authentication}}
 
  :duct.module/ataraxy
- {[:post "/users" {:keys [body-params]}] [:users/create body-params]
-  [:post "/users/signin" {:keys [body-params]}] [:users/signin body-params]
+ {[:post "/users"] [:users/create]
+  [:post "/users/signin"] [:users/signin]
 
   ["/articles"] {[:get] [:articles/index]
                  [:get id] [:articles/show ^Int id]
-                 [:post {{:keys [body]} :body-params}] ^:jws-auth [:articles/create body]
+                 [:post] ^:jws-auth [:articles/create]
                 ; [:put "/update" id {params :body-params}] [:articles/update ^Int id params]
                 ; [:delete id] [:articles/destroy ^Int id]
                 }}
