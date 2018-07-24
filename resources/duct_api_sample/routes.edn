@@ -12,9 +12,8 @@
   ["/articles"] {[:get] [:articles/index]
                  [:get "/" id] [:articles/show ^int id]
                  [:post] ^:jws-auth [:articles/create]
-                 [:patch "/" id "/update"] ^:jws-auth [:articles/update ^int id]
-                ; [:delete id] [:articles/destroy ^int id]
-                }}
+                 [:patch "/" id] ^:jws-auth [:articles/update ^int id]
+                 [:delete "/" id] ^:jws-auth [:articles/destroy ^int id]}}
 
  :duct-api-sample.handler.users/create
  {:db #ig/ref :duct.database/sql}
@@ -38,4 +37,9 @@
  {:db #ig/ref :duct.database/sql}
 
  :duct-api-sample.handler.articles/update
- {:db #ig/ref :duct.database/sql}}
+ {:db #ig/ref :duct.database/sql}
+
+ [:duct.handler.sql/execute :duct-api-sample.handler.articles/destroy]
+ {:db  #ig/ref :duct.database/sql
+  :request {[_ id] :ataraxy/result}
+  :sql     ["DELETE FROM articles WHERE id = ?" id]}}
