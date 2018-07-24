@@ -22,3 +22,16 @@
         (let [user-id (:id (users/find-user-by-email db email))
               article-id (articles/create-article db user-id body)]
           [::response/created (str "/articles/" article-id)])))))
+
+; (defmethod ig/init-key ::update [_ {:keys [db]}]
+;   (fn [{{article-id :id} :ataraxy/result :as request}]
+;     (println request)))
+
+; (if-not (authenticated? request)
+; (throw-unauthorized)
+; (if-let [errors (first (st/validate (:body-params request) create-form-schema))]
+;   [::response/bad-request errors]
+;   (let [user-id (:id (users/find-user-by-email db (get-in request (get-in request [:identity :email]))))]
+;     (if (articles/update-article db article-id (get-in request [:body-params :body]))
+;       [::response/no-content]
+;       [::response/not-found]))))))
