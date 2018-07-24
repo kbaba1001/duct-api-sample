@@ -10,12 +10,10 @@
   [:post "/users/signin"] [:users/signin]
 
   ["/articles"] {[:get] [:articles/index]
-                 [:get id] [:articles/show ^Int id]
-                ;  [:post] ^:jws-auth [:articles/create]
-
-                ;  [:post id] [:articles/update ^Int id]
-                ;  [:put id "/update"] ^:jws-auth [:articles/update ^Int id]
-                ; [:delete id] [:articles/destroy ^Int id]
+                 [:get "/" id] [:articles/show ^int id]
+                 [:post] ^:jws-auth [:articles/create]
+                 [:patch "/" id "/update"] ^:jws-auth [:articles/update ^int id]
+                ; [:delete id] [:articles/destroy ^int id]
                 }}
 
  :duct-api-sample.handler.users/create
@@ -30,7 +28,7 @@
   :sql ["SELECT * FROM articles"]
   :hrefs {:href "/articles/{id}"}}
 
- [:duct.handler.sql/query :duct-api-sample.handler.articles/show]
+ [:duct.handler.sql/query-one :duct-api-sample.handler.articles/show]
  {:db  #ig/ref :duct.database/sql
   :request {[_ id] :ataraxy/result}
   :sql ["SELECT * FROM articles WHERE id = ?" id]
@@ -39,8 +37,5 @@
  :duct-api-sample.handler.articles/create
  {:db #ig/ref :duct.database/sql}
 
- [:duct.handler.sql/query :duct-api-sample.handler.articles/update]
- {:db  #ig/ref :duct.database/sql
- :request {[_ id] :ataraxy/result}
- :sql ["SELECT * FROM articles WHERE id = ?" id]
- :hrefs {:href "/articles/{id}"}}}
+ :duct-api-sample.handler.articles/update
+ {:db #ig/ref :duct.database/sql}}
