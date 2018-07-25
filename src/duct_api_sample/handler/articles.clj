@@ -16,7 +16,7 @@
         {:keys [email]} :identity
         :as request}]
     (if-not (authenticated? request)
-      (throw-unauthorized)
+      [::response/unauthorized "invalid token"]
       (if-let [errors (first (st/validate params form-schema))]
         [::response/bad-request errors]
         (let [user-id (:id (users/find-user-by-email db email))
@@ -26,9 +26,17 @@
 (defmethod ig/init-key ::update [_ {:keys [db]}]
   (fn [{[_ article-id] :ataraxy/result :as request}]
     (if-not (authenticated? request)
-      (throw-unauthorized)
+      [::response/unauthorized "invalid token"]
       (if-let [errors (first (st/validate (:body-params request) form-schema))]
         [::response/bad-request errors]
         (if (articles/update-article db article-id (get-in request [:body-params :body]))
           [::response/no-content]
           [::response/not-found])))))
+
+(defmethod ig/init-key ::destroy [_ {:keys [db]}]
+  (fn [{[_ article-id] :ataraxy/result :as request}]
+    (if-not (authenticated? request)
+      [::response/unauthorized "invalid token"]
+      (if (articles/delete-article db article-id)
+        [::response/no-content]
+        [::response/not-found]))))

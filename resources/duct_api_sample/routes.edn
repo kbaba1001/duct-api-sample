@@ -39,7 +39,5 @@
  :duct-api-sample.handler.articles/update
  {:db #ig/ref :duct.database/sql}
 
- [:duct.handler.sql/execute :duct-api-sample.handler.articles/destroy]
- {:db  #ig/ref :duct.database/sql
-  :request {[_ id] :ataraxy/result}
-  :sql     ["DELETE FROM articles WHERE id = ?" id]}}
+ :duct-api-sample.handler.articles/destroy
+ {:db #ig/ref :duct.database/sql}}

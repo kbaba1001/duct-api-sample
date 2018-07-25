@@ -4,7 +4,8 @@
 
 (defprotocol Articles
   (create-article [db user-id body])
-  (update-article [db id body]))
+  (update-article [db id body])
+  (delete-article [db id]))
 
 (extend-protocol Articles
   duct.database.sql.Boundary
@@ -16,4 +17,8 @@
 
   (update-article [{:keys [spec]} id body]
     (let [results (jdbc/update! spec :articles {:body body} ["id = ?" id])]
+      (= 1 (first results))))
+
+  (delete-article [{:keys [spec]} id]
+    (let [results (jdbc/delete! spec :articles ["id = ?" id])]
       (= 1 (first results)))))
