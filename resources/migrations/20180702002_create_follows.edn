@@ -3,5 +3,9 @@
                               followed_user_id integer NOT NULL REFERENCES users (id),
                               created_at timestamptz NOT NULL DEFAULT now(),
                               updated_at timestamptz NOT NULL DEFAULT now(),
-                              UNIQUE (follow_user_id, followed_user_id))"]
+                              UNIQUE (follow_user_id, followed_user_id))"
+      "CREATE TRIGGER set_timestamp
+       BEFORE UPDATE ON follows
+       FOR EACH ROW
+       EXECUTE PROCEDURE trigger_set_updated_at();"]
  :down ["DROP TABLE follows"]}

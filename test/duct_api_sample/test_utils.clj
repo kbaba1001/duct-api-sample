@@ -8,6 +8,14 @@
 
 (def db (->Boundary db-spec))
 
+(defn drop-table [table-name]
+    (jdbc/delete! db-spec table-name []))
+
+(defn drop-all-tables []
+  (do
+    (drop-table :articles)
+    (drop-table :users)))
+
 (defn db-creanup [test-fn]
   (test-fn)
-  (jdbc/delete! db-spec :users []))
+  (drop-all-tables))

@@ -105,6 +105,13 @@ dev=> (test)
 ...
 ```
 
+run only specified test:
+
+```clojure
+dev=> (test [#'duct-api-sample.boundary.users-test/test-create-user])
+...
+```
+
 or, run next command:
 
 ```sh

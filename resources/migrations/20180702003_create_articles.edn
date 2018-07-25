@@ -2,5 +2,9 @@
                                user_id integer NOT NULL REFERENCES users (id),
                                body text NOT NULL,
                                created_at timestamptz NOT NULL DEFAULT now(),
-                               updated_at timestamptz NOT NULL DEFAULT now())"]
+                               updated_at timestamptz NOT NULL DEFAULT now())"
+      "CREATE TRIGGER set_timestamp
+        BEFORE UPDATE ON articles
+        FOR EACH ROW
+        EXECUTE PROCEDURE trigger_set_updated_at();"]
  :down ["DROP TABLE articles"]}

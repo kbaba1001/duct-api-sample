@@ -6,12 +6,38 @@
  {:middleware {:jws-auth #ig/ref :duct.middleware.buddy/authentication}}
 
  :duct.module/ataraxy
- {[:post "/users" {{:keys [email password]} :body-params}] [:users/create email password]
-  [:post "/users/signin" {{:keys [email password]} :body-params}] [:users/signin email password]}
+ {[:post "/users"] [:users/create]
+  [:post "/users/signin"] [:users/signin]
+
+  ["/articles"] {[:get] [:articles/index]
+                 [:get "/" id] [:articles/show ^int id]
+                 [:post] ^:jws-auth [:articles/create]
+                 [:patch "/" id] ^:jws-auth [:articles/update ^int id]
+                 [:delete "/" id] ^:jws-auth [:articles/destroy ^int id]}}
 
  :duct-api-sample.handler.users/create
  {:db #ig/ref :duct.database/sql}
 
  :duct-api-sample.handler.users/signin
  {:db #ig/ref :duct.database/sql
-  :jwt-secret #duct/env "JWT_SECRET"}}
+  :jwt-secret #duct/env "JWT_SECRET"}
+
+ [:duct.handler.sql/query :duct-api-sample.handler.articles/index]
+ {:db  #ig/ref :duct.database/sql
+  :sql ["SELECT * FROM articles"]
+  :hrefs {:href "/articles/{id}"}}
+
+ [:duct.handler.sql/query-one :duct-api-sample.handler.articles/show]
+ {:db  #ig/ref :duct.database/sql
+  :request {[_ id] :ataraxy/result}
+  :sql ["SELECT * FROM articles WHERE id = ?" id]
+  :hrefs {:href "/articles/{id}"}}
+
+ :duct-api-sample.handler.articles/create
+ {:db #ig/ref :duct.database/sql}
+
+ :duct-api-sample.handler.articles/update
+ {:db #ig/ref :duct.database/sql}
+
+ :duct-api-sample.handler.articles/destroy
+ {:db #ig/ref :duct.database/sql}}
